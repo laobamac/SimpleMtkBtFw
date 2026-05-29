@@ -58,6 +58,7 @@ Do not inject another Bluetooth firmware loader that binds to the same USB Bluet
 - MediaTek Inc. - MediaTek Bluetooth firmware format and Linux driver reference material.
 - Linux kernel Bluetooth contributors - `btmtk` / `btusb` logic and device ID references.
 - `vit9696`, acidanthera, and Lilu contributors - Lilu patching framework.
+- `dawalishi821` provides network card hardware
 
 ## Copyright And Licensing
 
