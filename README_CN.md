@@ -58,6 +58,7 @@ xcodebuild -project SimpleMtkBtFw.xcodeproj -scheme SimpleMtkBtPatcher -configur
 - MediaTek Inc. - MediaTek 蓝牙固件格式和 Linux 驱动参考资料。
 - Linux kernel Bluetooth 贡献者 - `btmtk` / `btusb` 逻辑和设备 ID 参考。
 - `vit9696`、acidanthera 和 Lilu 贡献者 - Lilu patching framework。
+- `dawalishi821` 提供网卡硬件
 
 ## 版权和许可
 
