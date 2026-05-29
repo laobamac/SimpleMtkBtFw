@@ -1,0 +1,542 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		50E7FCC12525921B009AC958 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E7FCC02525921B009AC958 /* libkmod.a */; };
+		BBF2E8D42FC9FF2D0000F940 /* FwBinary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF2E8D32FC9FF2D0000F940 /* FwBinary.cpp */; };
+		F834E419237C20FF000CB269 /* SimpleMtkBtFw.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F834E418237C20FF000CB269 /* SimpleMtkBtFw.hpp */; };
+		F834E41B237C20FF000CB269 /* SimpleMtkBtFw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F834E41A237C20FF000CB269 /* SimpleMtkBtFw.cpp */; };
+		F854148E261EAA240093D94D /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = F854148C261EAA240093D94D /* zutil.c */; };
+		F854148F261EAA240093D94D /* zutil.h in Headers */ = {isa = PBXBuildFile; fileRef = F854148D261EAA240093D94D /* zutil.h */; };
+		F8C3BFCE2380DB0D006000F5 /* BtMtk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8C3BFCD2380DB0D006000F5 /* BtMtk.cpp */; };
+		F8CD9CD82798ED5100EDBD8E /* SimpleMtkBtPatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8CD9CD72798ED5100EDBD8E /* SimpleMtkBtPatcher.cpp */; };
+		F8CD9CDE2798ED8D00EDBD8E /* SimpleMtkBtPatcher.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F8CD9CDD2798ED8D00EDBD8E /* SimpleMtkBtPatcher.hpp */; };
+		F8CD9CDF2798F0E000EDBD8E /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E7FCC02525921B009AC958 /* libkmod.a */; };
+		F8CD9CE32798F22500EDBD8E /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8CD9CE12798F1E000EDBD8E /* plugin_start.cpp */; };
+		F8F5DEED26576775000939CF /* linux.h in Headers */ = {isa = PBXBuildFile; fileRef = F8F5DEEC26576775000939CF /* linux.h */; };
+		F8F5DEF02657B7BF000939CF /* USBDeviceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8F5DEEE2657B7BF000939CF /* USBDeviceController.cpp */; };
+		F8F5DEF12657B7BF000939CF /* USBDeviceController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F8F5DEEF2657B7BF000939CF /* USBDeviceController.hpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		50E7FCC02525921B009AC958 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
+		BBF2E8D02FC9FE9A0000F940 /* BT_RAM_CODE_MT7922_1_1_hdr.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = BT_RAM_CODE_MT7922_1_1_hdr.bin; sourceTree = "<group>"; };
+		BBF2E8D12FC9FE9A0000F940 /* BT_RAM_CODE_MT7961_1_2_hdr.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = BT_RAM_CODE_MT7961_1_2_hdr.bin; sourceTree = "<group>"; };
+		BBF2E8D22FC9FE9A0000F940 /* BT_RAM_CODE_MT7961_1a_2_hdr.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = BT_RAM_CODE_MT7961_1a_2_hdr.bin; sourceTree = "<group>"; };
+		BBF2E8D32FC9FF2D0000F940 /* FwBinary.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FwBinary.cpp; sourceTree = "<group>"; };
+		F834911923AF9B3C00551995 /* FwData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FwData.h; sourceTree = "<group>"; };
+		F834E415237C20FF000CB269 /* SimpleMtkBtFw.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleMtkBtFw.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		F834E418237C20FF000CB269 /* SimpleMtkBtFw.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimpleMtkBtFw.hpp; sourceTree = "<group>"; };
+		F834E41A237C20FF000CB269 /* SimpleMtkBtFw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleMtkBtFw.cpp; sourceTree = "<group>"; };
+		F834E41C237C20FF000CB269 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F854148C261EAA240093D94D /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
+		F854148D261EAA240093D94D /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
+		F8BD1B3C2396ACAB0088EBE4 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Log.h; sourceTree = "<group>"; };
+		F8C3BFCC2380DA75006000F5 /* BtMtk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BtMtk.h; sourceTree = "<group>"; };
+		F8C3BFCD2380DB0D006000F5 /* BtMtk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BtMtk.cpp; sourceTree = "<group>"; };
+		F8C3BFCF2380E5FC006000F5 /* Hci.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hci.h; sourceTree = "<group>"; };
+		F8CD9CD52798ED5100EDBD8E /* SimpleMtkBtPatcher.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleMtkBtPatcher.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8CD9CD72798ED5100EDBD8E /* SimpleMtkBtPatcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleMtkBtPatcher.cpp; sourceTree = "<group>"; };
+		F8CD9CD92798ED5100EDBD8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8CD9CDD2798ED8D00EDBD8E /* SimpleMtkBtPatcher.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimpleMtkBtPatcher.hpp; sourceTree = "<group>"; };
+		F8CD9CE12798F1E000EDBD8E /* plugin_start.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_start.cpp; path = Lilu.kext/Contents/Resources/Library/plugin_start.cpp; sourceTree = "<group>"; };
+		F8F5DEEC26576775000939CF /* linux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
+		F8F5DEEE2657B7BF000939CF /* USBDeviceController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = USBDeviceController.cpp; sourceTree = "<group>"; };
+		F8F5DEEF2657B7BF000939CF /* USBDeviceController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = USBDeviceController.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F834E412237C20FF000CB269 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50E7FCC12525921B009AC958 /* libkmod.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8CD9CD22798ED5100EDBD8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8CD9CDF2798F0E000EDBD8E /* libkmod.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		50E7FCBF2525921B009AC958 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50E7FCC02525921B009AC958 /* libkmod.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F834E40B237C20FF000CB269 = {
+			isa = PBXGroup;
+			children = (
+				F834E417237C20FF000CB269 /* SimpleMtkBtFw */,
+				F8CD9CD62798ED5100EDBD8E /* SimpleMtkBtPatcher */,
+				F834E416237C20FF000CB269 /* Products */,
+				50E7FCBF2525921B009AC958 /* Frameworks */,
+				F854146B261EA4350093D94D /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		F834E416237C20FF000CB269 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F834E415237C20FF000CB269 /* SimpleMtkBtFw.kext */,
+				F8CD9CD52798ED5100EDBD8E /* SimpleMtkBtPatcher.kext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F834E417237C20FF000CB269 /* SimpleMtkBtFw */ = {
+			isa = PBXGroup;
+			children = (
+				F8B97C90267F58E100AB2229 /* fw */,
+				F854148C261EAA240093D94D /* zutil.c */,
+				F854148D261EAA240093D94D /* zutil.h */,
+				F8F5DEEC26576775000939CF /* linux.h */,
+				F834911923AF9B3C00551995 /* FwData.h */,
+				BBF2E8D32FC9FF2D0000F940 /* FwBinary.cpp */,
+				F8BD1B3C2396ACAB0088EBE4 /* Log.h */,
+				F8C3BFCF2380E5FC006000F5 /* Hci.h */,
+				F8C3BFCC2380DA75006000F5 /* BtMtk.h */,
+				F8C3BFCD2380DB0D006000F5 /* BtMtk.cpp */,
+				F834E41A237C20FF000CB269 /* SimpleMtkBtFw.cpp */,
+				F834E418237C20FF000CB269 /* SimpleMtkBtFw.hpp */,
+				F8F5DEEE2657B7BF000939CF /* USBDeviceController.cpp */,
+				F8F5DEEF2657B7BF000939CF /* USBDeviceController.hpp */,
+				F834E41C237C20FF000CB269 /* Info.plist */,
+			);
+			path = SimpleMtkBtFw;
+			sourceTree = "<group>";
+		};
+		F854146B261EA4350093D94D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F8CD9CE12798F1E000EDBD8E /* plugin_start.cpp */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		F8B97C90267F58E100AB2229 /* fw */ = {
+			isa = PBXGroup;
+			children = (
+				BBF2E8D02FC9FE9A0000F940 /* BT_RAM_CODE_MT7922_1_1_hdr.bin */,
+				BBF2E8D12FC9FE9A0000F940 /* BT_RAM_CODE_MT7961_1_2_hdr.bin */,
+				BBF2E8D22FC9FE9A0000F940 /* BT_RAM_CODE_MT7961_1a_2_hdr.bin */,
+			);
+			path = fw;
+			sourceTree = "<group>";
+		};
+		F8CD9CD62798ED5100EDBD8E /* SimpleMtkBtPatcher */ = {
+			isa = PBXGroup;
+			children = (
+				F8CD9CD72798ED5100EDBD8E /* SimpleMtkBtPatcher.cpp */,
+				F8CD9CDD2798ED8D00EDBD8E /* SimpleMtkBtPatcher.hpp */,
+				F8CD9CD92798ED5100EDBD8E /* Info.plist */,
+			);
+			path = SimpleMtkBtPatcher;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		F834E410237C20FF000CB269 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8F5DEF12657B7BF000939CF /* USBDeviceController.hpp in Headers */,
+				F8F5DEED26576775000939CF /* linux.h in Headers */,
+				F834E419237C20FF000CB269 /* SimpleMtkBtFw.hpp in Headers */,
+				F854148F261EAA240093D94D /* zutil.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8CD9CD02798ED5100EDBD8E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8CD9CDE2798ED8D00EDBD8E /* SimpleMtkBtPatcher.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		F834E414237C20FF000CB269 /* SimpleMtkBtFw */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F834E41F237C20FF000CB269 /* Build configuration list for PBXNativeTarget "SimpleMtkBtFw" */;
+			buildPhases = (
+				50575CF32526E44A00445985 /* Generate Firmware */,
+				F834E410237C20FF000CB269 /* Headers */,
+				F834E411237C20FF000CB269 /* Sources */,
+				F834E412237C20FF000CB269 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleMtkBtFw;
+			productName = SimpleMtkBtFw;
+			productReference = F834E415237C20FF000CB269 /* SimpleMtkBtFw.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
+		F8CD9CD42798ED5100EDBD8E /* SimpleMtkBtPatcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8CD9CDC2798ED5100EDBD8E /* Build configuration list for PBXNativeTarget "SimpleMtkBtPatcher" */;
+			buildPhases = (
+				F8CD9CD02798ED5100EDBD8E /* Headers */,
+				F8CD9CD12798ED5100EDBD8E /* Sources */,
+				F8CD9CD22798ED5100EDBD8E /* Frameworks */,
+				F8CD9CD32798ED5100EDBD8E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleMtkBtPatcher;
+			productName = SimpleMtkBtPatcher;
+			productReference = F8CD9CD52798ED5100EDBD8E /* SimpleMtkBtPatcher.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F834E40C237C20FF000CB269 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1110;
+				ORGANIZATIONNAME = laobamac;
+				TargetAttributes = {
+					F834E414237C20FF000CB269 = {
+						CreatedOnToolsVersion = 11.1;
+					};
+					F8CD9CD42798ED5100EDBD8E = {
+						CreatedOnToolsVersion = 11.0;
+					};
+				};
+			};
+			buildConfigurationList = F834E40F237C20FF000CB269 /* Build configuration list for PBXProject "SimpleMtkBtFw" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F834E40B237C20FF000CB269;
+			productRefGroup = F834E416237C20FF000CB269 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F834E414237C20FF000CB269 /* SimpleMtkBtFw */,
+				F8CD9CD42798ED5100EDBD8E /* SimpleMtkBtPatcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F8CD9CD32798ED5100EDBD8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		50575CF32526E44A00445985 /* Generate Firmware */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Firmware";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(PROJECT_DIR)/SimpleMtkBtFw/FwBinary.cpp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\n\n#  fw_gen.sh\n#  SimpleMtkBtFw\n#\n#  Created by qcwap on 2020/2/26.\n#  Copyright © 2020 钟先耀. All rights reserved.\n\ntarget_file=\"${PROJECT_DIR}\"/SimpleMtkBtFw/FwBinary.cpp\nfw_files=\"${PROJECT_DIR}/SimpleMtkBtFw/fw/\"\n\nrm -rf \"$target_file\"\n\nscript_file=\"${PROJECT_DIR}/scripts/\"\npython3 -c 'import sys;sys.path.append(\"'$script_file'\");import zlib_compress_fw;zlib_compress_fw.process_files(\"'${target_file}'\", \"'$fw_files'\")'\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F834E411237C20FF000CB269 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F854148E261EAA240093D94D /* zutil.c in Sources */,
+				F8F5DEF02657B7BF000939CF /* USBDeviceController.cpp in Sources */,
+				BBF2E8D42FC9FF2D0000F940 /* FwBinary.cpp in Sources */,
+				F8C3BFCE2380DB0D006000F5 /* BtMtk.cpp in Sources */,
+				F834E41B237C20FF000CB269 /* SimpleMtkBtFw.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8CD9CD12798ED5100EDBD8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8CD9CE32798F22500EDBD8E /* plugin_start.cpp in Sources */,
+				F8CD9CD82798ED5100EDBD8E /* SimpleMtkBtPatcher.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F834E41D237C20FF000CB269 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MODULE_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Debug;
+		};
+		F834E41E237C20FF000CB269 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MODULE_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Release;
+		};
+		F834E420237C20FF000CB269 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				INFOPLIST_FILE = SimpleMtkBtFw/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MODULE_NAME = com.laobamac.SimpleMtkBtFw;
+				MODULE_VERSION = "$(MODULE_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.laobamac.SimpleMtkBtFw;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F834E421237C20FF000CB269 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				INFOPLIST_FILE = SimpleMtkBtFw/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MODULE_NAME = com.laobamac.SimpleMtkBtFw;
+				MODULE_VERSION = "$(MODULE_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.laobamac.SimpleMtkBtFw;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F8CD9CDA2798ED5100EDBD8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = "$(MODULE_VERSION)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"MODULE_VERSION=$(MODULE_VERSION)",
+					"PRODUCT_NAME=$(PRODUCT_NAME)",
+				);
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Lilu.kext/Contents/Resources";
+				INFOPLIST_FILE = SimpleMtkBtPatcher/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Library/x86_64";
+				MARKETING_VERSION = "$(MODULE_VERSION)";
+				MODULE_NAME = com.laobamac.SimpleMtkBtPatcher;
+				MODULE_START = SimpleMtkBtPatcher_kern_start;
+				MODULE_STOP = SimpleMtkBtPatcher_kern_stop;
+				MODULE_VERSION = "$(MODULE_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.laobamac.SimpleMtkBtPatcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F8CD9CDB2798ED5100EDBD8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = "$(MODULE_VERSION)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MODULE_VERSION=$(MODULE_VERSION)",
+					"PRODUCT_NAME=$(PRODUCT_NAME)",
+				);
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Lilu.kext/Contents/Resources";
+				INFOPLIST_FILE = SimpleMtkBtPatcher/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Library/x86_64";
+				MARKETING_VERSION = "$(MODULE_VERSION)";
+				MODULE_NAME = com.laobamac.SimpleMtkBtPatcher;
+				MODULE_START = SimpleMtkBtPatcher_kern_start;
+				MODULE_STOP = SimpleMtkBtPatcher_kern_stop;
+				MODULE_VERSION = "$(MODULE_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.laobamac.SimpleMtkBtPatcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F834E40F237C20FF000CB269 /* Build configuration list for PBXProject "SimpleMtkBtFw" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F834E41D237C20FF000CB269 /* Debug */,
+				F834E41E237C20FF000CB269 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F834E41F237C20FF000CB269 /* Build configuration list for PBXNativeTarget "SimpleMtkBtFw" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F834E420237C20FF000CB269 /* Debug */,
+				F834E421237C20FF000CB269 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8CD9CDC2798ED5100EDBD8E /* Build configuration list for PBXNativeTarget "SimpleMtkBtPatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8CD9CDA2798ED5100EDBD8E /* Debug */,
+				F8CD9CDB2798ED5100EDBD8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F834E40C237C20FF000CB269 /* Project object */;
+}
