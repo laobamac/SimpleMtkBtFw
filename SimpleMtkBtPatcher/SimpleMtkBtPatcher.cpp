@@ -75,6 +75,7 @@ static KernelPatcher::KextInfo SimpleMtkBtPatcher_IOUsbHostInfo {
 };
 
 bool CSimpleMtkBtPatcher::_randomAddressInit = false;
+bool CSimpleMtkBtPatcher::_randomAddressHack = false;
 
 bool CSimpleMtkBtPatcher::init()
 {
@@ -123,7 +124,27 @@ void CSimpleMtkBtPatcher::processKext(KernelPatcher &patcher, size_t index, mach
     } else {
         if (SimpleMtkBtPatcher_IOUsbHostInfo.loadIndex == index) {
             SYSLOG(DRV_NAME, "%s", SimpleMtkBtPatcher_IOUsbHostInfo.id);
-            
+
+            KernelPatcher::RouteRequest pipeIoRequest {
+                "__ZN13IOUSBHostPipe2ioEP18IOMemoryDescriptorjP19IOUSBHostCompletionj",
+                newPipeIo,
+                oldPipeIo
+            };
+            patcher.routeMultiple(index, &pipeIoRequest, 1, address, size);
+            if (patcher.getError() == KernelPatcher::Error::NoError) {
+                SYSLOG(DRV_NAME, "routed %s", pipeIoRequest.symbol);
+            } else {
+                SYSLOG(DRV_NAME, "failed to resolve %s, error = %d", pipeIoRequest.symbol, patcher.getError());
+                patcher.clearError();
+            }
+
+            /*
+             * deviceRequest carries HCI commands (EP0). It is hooked for the
+             * Read Clock fix; the LE random address workaround (written for
+             * Intel controllers) stays opt-in via -smbtrandaddr.
+             */
+            _randomAddressHack = checkKernelArgument("-smbtrandaddr");
+
             KernelPatcher::RouteRequest hostDeviceRequest {
             "__ZN15IOUSBHostDevice13deviceRequestEP9IOServiceRN11StandardUSB13DeviceRequestEPvP18IOMemoryDescriptorRjP19IOUSBHostCompletionj",
                 newHostDeviceRequest,
@@ -171,6 +192,8 @@ IOReturn CSimpleMtkBtPatcher::newHostDeviceRequest(void *that, IOService *provid
     HciCommandHdr *hdr = nullptr;
     uint32_t hdrLen = 0;
     char hciBuf[MAX_HCI_BUF_LEN] = {0};
+
+    fixReadClock(request, data, descriptor);
     
     if (data == nullptr) {
         if (descriptor != nullptr &&
@@ -183,7 +206,7 @@ IOReturn CSimpleMtkBtPatcher::newHostDeviceRequest(void *that, IOService *provid
                 descriptor->complete(kIODirectionOut);
         }
         hdr = (HciCommandHdr *)hciBuf;
-        if (hdr->opcode == HCI_OP_LE_SET_SCAN_PARAM) {
+        if (_randomAddressHack && hdr->opcode == HCI_OP_LE_SET_SCAN_PARAM) {
             if (!_randomAddressInit) {
                 randomAddressRequest.bmRequestType = makeDeviceRequestbmRequestType(kRequestDirectionOut, kRequestTypeClass, kRequestRecipientInterface);
                 randomAddressRequest.bRequest = 0xE0;
@@ -225,4 +248,108 @@ IOReturn CSimpleMtkBtPatcher::newHostDeviceRequest(void *that, IOService *provid
 #endif
     }
     return FunctionCast(newHostDeviceRequest, callbackMtkBtPatcher->oldHostDeviceRequest)(that, provider, request, data, descriptor, length, completion, timeout);
+}
+
+#pragma mark - HCI Read Clock for MediaTek
+
+/*
+ * bluetoothd reads the BT clock with HCI_Read_Clock(handle, Which_Clock=0).
+ * For the local clock MediaTek returns Connection_Handle 0 instead of the
+ * handle that was passed, so bluetoothd cannot match the result to the
+ * connection ("Failed to read BT clock"). AAC-ELD streaming to AirPods
+ * timestamps audio with that clock, and the headphones never start playing.
+ * Ask for the piconet clock of the connection instead (Which_Clock=1): the
+ * controller then returns the handle, and as central the piconet clock is
+ * our own native clock.
+ */
+#define HCI_OP_READ_CLOCK 0x1407
+static uint32_t readClockRewritten, aclPbRewritten;
+
+static void publishCounters()
+{
+    IOService *res = IOService::getResourceService();
+    if (!res)
+        return;
+    OSDictionary *d = OSDictionary::withCapacity(2);
+    if (!d)
+        return;
+    OSNumber *n1 = OSNumber::withNumber(readClockRewritten, 32);
+    OSNumber *n2 = OSNumber::withNumber(aclPbRewritten, 32);
+    if (n1) { d->setObject("ReadClockRewritten", n1); n1->release(); }
+    if (n2) { d->setObject("AclPbRewritten", n2); n2->release(); }
+    res->setProperty("SimpleMtkBtPatcher", d);
+    d->release();
+}
+
+void CSimpleMtkBtPatcher::fixReadClock(StandardUSB::DeviceRequest &request, void *data, IOMemoryDescriptor *descriptor)
+{
+    /* HCI command: class request to the interface, host to device */
+    if ((request.bmRequestType & 0x80) != 0 || request.wLength != 6)
+        return;
+    uint8_t cmd[6];
+    if (data != nullptr) {
+        memcpy(cmd, data, sizeof(cmd));
+    } else if (descriptor != nullptr && descriptor->prepare(kIODirectionInOut) == kIOReturnSuccess) {
+        bool ok = descriptor->readBytes(0, cmd, sizeof(cmd)) == sizeof(cmd);
+        if (ok && (cmd[0] | (cmd[1] << 8)) == HCI_OP_READ_CLOCK && cmd[2] == 3 && cmd[5] == 0) {
+            cmd[5] = 1;
+            if (descriptor->writeBytes(5, &cmd[5], 1) == 1) {
+                readClockRewritten++;
+                publishCounters();
+            }
+        }
+        descriptor->complete(kIODirectionInOut);
+        return;
+    } else {
+        return;
+    }
+    if ((cmd[0] | (cmd[1] << 8)) == HCI_OP_READ_CLOCK && cmd[2] == 3 && cmd[5] == 0) {
+        static_cast<uint8_t *>(data)[5] = 1;
+        readClockRewritten++;
+        publishCounters();
+    }
+}
+
+#pragma mark - Non-flushable ACL for MediaTek
+
+/*
+ * bluetoothd sends A2DP media as "first automatically flushable" ACL
+ * fragments (packet boundary flag 0b10). MediaTek firmware flushes those
+ * when a large L2CAP frame (AAC-ELD to AirPods, ~966 bytes) does not make
+ * it in one baseband packet, so the headphones get broken frames, never
+ * start playback and pause the stream. Linux always sends ACL data as
+ * non-flushable (0b00) to these controllers. Rewrite the flag on HCI ACL
+ * packets going to bulk OUT endpoints.
+ */
+static uint32_t pbRewritten;
+
+IOReturn CSimpleMtkBtPatcher::newPipeIo(void *that, IOMemoryDescriptor *dataBuffer, uint32_t dataBufferLength, IOUSBHostCompletion *completion, uint32_t completionTimeoutMs)
+{
+    IOUSBHostPipe *pipe = static_cast<IOUSBHostPipe *>(that);
+    if (dataBuffer != nullptr && dataBufferLength >= 4 && dataBufferLength <= 1100) {
+        const StandardUSB::EndpointDescriptor *ep = pipe->getEndpointDescriptor();
+        if (ep != nullptr &&
+            (ep->bmAttributes & 0x03) == 0x02 &&        /* bulk */
+            (ep->bEndpointAddress & 0x80) == 0 &&       /* OUT */
+            dataBuffer->prepare(kIODirectionInOut) == kIOReturnSuccess) {
+            uint8_t hdr[4];
+            if (dataBuffer->readBytes(0, hdr, sizeof(hdr)) == sizeof(hdr)) {
+                uint16_t handle = hdr[0] | (hdr[1] << 8);
+                uint16_t len = hdr[2] | (hdr[3] << 8);
+                /* looks like HCI ACL: sane handle, length matches, PB = 0b10 */
+                if ((handle & 0x0fff) < 0x0f00 && len + 4u == dataBufferLength &&
+                    ((handle >> 12) & 3) == 2) {
+                    hdr[1] &= ~0x30;
+                    if (dataBuffer->writeBytes(1, &hdr[1], 1) == 1) {
+                        if (pbRewritten++ < 3)
+                            SYSLOG(DRV_NAME, "ACL PB flushable->non-flushable handle 0x%03x len %u", handle & 0x0fff, len);
+                        if ((++aclPbRewritten & 0x3ff) == 1)
+                            publishCounters();
+                    }
+                }
+            }
+            dataBuffer->complete(kIODirectionInOut);
+        }
+    }
+    return FunctionCast(newPipeIo, callbackMtkBtPatcher->oldPipeIo)(that, dataBuffer, dataBufferLength, completion, completionTimeoutMs);
 }

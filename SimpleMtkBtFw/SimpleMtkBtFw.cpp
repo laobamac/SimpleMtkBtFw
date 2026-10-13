@@ -93,6 +93,8 @@ bool SimpleMtkBtFw::start(IOService *provider)
 
 void SimpleMtkBtFw::publishReg(bool isSucceed, const char *fwName)
 {
+    XYLog("publishReg ok=%d fw=%s\n", isSucceed, fwName ? fwName : "-");
+    m_pDevice->setProperty("MtkBtLog", mtkbt_log_buf());
     m_pDevice->setProperty("FirmwareLoaded", isSucceed);
     if (isSucceed && fwName) {
         OSString *fwNameString = OSString::withCString(fwName);
@@ -103,6 +105,15 @@ void SimpleMtkBtFw::publishReg(bool isSucceed, const char *fwName)
     }
     if (version_major >= 21) {
         m_pDevice->setName("Bluetooth USB Host Controller");
+        /*
+         * Leave "USB Product Name" alone: bluetoothd's Found_USB_Dongle()
+         * skips devices whose product name is "Bluetooth USB Host
+         * Controller" (treated as Apple's internal module), and the
+         * internal path assumes a Broadcom chipset and aborts on
+         * MediaTek's reply to BCM VSC 0xFC79. With the NVRAM variables
+         * bluetoothInternalControllerInfo / bluetoothExternalDongleFailed
+         * set, the device is picked up as THIRD_PARTY_DONGLE instead.
+         */
     }
 }
 

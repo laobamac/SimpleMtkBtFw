@@ -1,0 +1,28 @@
+SimpleMtkBtFw - Bluetooth for MediaTek MT7921 / RZ608 / MT7922 (OpenCore)
+
+1. Copy everything from Kexts/ to EFI/OC/Kexts/
+   (skip Lilu.kext / BlueToolFixup.kext if you already have them).
+
+2. config.plist -> Kernel -> Add, in this order:
+     Lilu.kext
+     BlueToolFixup.kext       (MinKernel 21.0.0)
+     SimpleMtkBtFw.kext
+     SimpleMtkBtPatcher.kext
+   Ready-made entries: config-snippet.plist (open it in ProperTree / OCAT
+   and copy the items over).
+
+3. config.plist -> NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82:
+     bluetoothInternalControllerInfo   Data  0000000000000000000000000000 (14 bytes)
+     bluetoothExternalDongleFailed     Data  00
+   and list the same two keys in NVRAM -> Delete under the same GUID.
+
+4. Do not inject any other Bluetooth firmware loader for this device.
+
+5. Reboot. Check: system_profiler SPBluetoothDataType
+     Chipset: THIRD_PARTY_DONGLE, State: On
+
+If the Bluetooth device disappears after a reboot: shut down and cut power
+to the PC for ~30 s (the M.2 card keeps standby power and can stay wedged).
+
+Wi-Fi for the same card: https://github.com/flxxxxddd/SimpleMtkWlan
+Docs: https://github.com/flxxxxddd/SimpleMtkBtFw

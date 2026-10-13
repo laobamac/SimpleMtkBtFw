@@ -222,6 +222,7 @@ bool BtMtk::setupFirmware79xx(const char *fwname, u32 devId)
                 goto done;
             }
 
+            XYLog("section %u patch status %u\n", i, status);
             if (status == BTMTK_WMT_PATCH_UNDONE) {
                 break;
             }

@@ -19,6 +19,7 @@
 #include <Headers/kern_patcher.hpp>
 
 #include <IOKit/usb/IOUSBHostDevice.h>
+#include <IOKit/usb/IOUSBHostPipe.h>
 
 #define DRV_NAME "smbtp"
 
@@ -94,9 +95,13 @@ public:
     
     mach_vm_address_t oldFindQueueRequest {};
     mach_vm_address_t oldHostDeviceRequest {};
+    static IOReturn newPipeIo(void *that, IOMemoryDescriptor *dataBuffer, uint32_t dataBufferLength, IOUSBHostCompletion *completion, uint32_t completionTimeoutMs);
+    mach_vm_address_t oldPipeIo {};
     
+    static void fixReadClock(StandardUSB::DeviceRequest &request, void *data, IOMemoryDescriptor *descriptor);
 private:
     static bool _randomAddressInit;
+    static bool _randomAddressHack;
 };
 
 #endif /* SimpleMtkBtPatcher_h */

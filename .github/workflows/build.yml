@@ -1,0 +1,118 @@
+name: Build
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout (with MacKernelSDK submodule)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          clang --version | head -1
+
+      - name: Dependencies (Lilu SDK)
+        run: ./scripts/bootstrap.sh
+
+      - name: Version
+        id: ver
+        run: |
+          # Kext bundle versions must be purely numeric (e.g. 1.1.0).
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$(sed -n 's/.*MODULE_VERSION = \([0-9.]*\);.*/\1/p' SimpleMtkBtFw.xcodeproj/project.pbxproj | head -1)"
+          fi
+          if ! [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
+            echo "::error::Invalid kext version '$VERSION' (use tags like v1.2.3)"; exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Build Debug and Release
+        run: |
+          for CONF in Debug Release; do
+            for SCHEME in SimpleMtkBtFw SimpleMtkBtPatcher; do
+              xcodebuild -project SimpleMtkBtFw.xcodeproj -scheme "$SCHEME" \
+                -configuration "$CONF" -derivedDataPath build \
+                MODULE_VERSION="${{ steps.ver.outputs.version }}" \
+                CODE_SIGNING_ALLOWED=NO build
+            done
+          done
+
+      - name: Package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V="${{ steps.ver.outputs.version }}"
+          LILU_VERSION=1.7.2
+          BRCM_VERSION=2.7.2
+          mkdir -p dist deps
+          # Third-party kexts that are needed alongside ours
+          curl -fsSL -o deps/lilu.zip "https://github.com/acidanthera/Lilu/releases/download/${LILU_VERSION}/Lilu-${LILU_VERSION}-RELEASE.zip"
+          curl -fsSL -o deps/brcm.zip "https://github.com/acidanthera/BrcmPatchRAM/releases/download/${BRCM_VERSION}/BrcmPatchRAM-${BRCM_VERSION}-RELEASE.zip"
+          ditto -x -k deps/lilu.zip deps/lilu
+          ditto -x -k deps/brcm.zip deps/brcm
+          LILU="$(find deps/lilu -maxdepth 2 -name Lilu.kext | head -1)"
+          BTF="$(find deps/brcm -maxdepth 2 -name BlueToolFixup.kext | head -1)"
+          test -d "$LILU" && test -d "$BTF"
+          for CONF in Debug Release; do
+            UP="$(echo "$CONF" | tr '[:lower:]' '[:upper:]')"
+            P="build/Build/Products/$CONF"
+            # Only our kexts
+            STAGE="$(mktemp -d)"
+            cp -R "$P/SimpleMtkBtFw.kext" "$P/SimpleMtkBtPatcher.kext" "$STAGE/"
+            (cd "$STAGE" && zip -qry "$GITHUB_WORKSPACE/dist/SimpleMtkBtFw-$V-$UP.zip" .)
+            # Everything needed for Bluetooth, ready for EFI/OC/Kexts
+            ALL="$(mktemp -d)/SimpleMtkBtFw-$V-$UP-AllInOne"
+            mkdir -p "$ALL/Kexts"
+            cp -R "$LILU" "$BTF" "$P/SimpleMtkBtFw.kext" "$P/SimpleMtkBtPatcher.kext" "$ALL/Kexts/"
+            cp docs/config-snippet.plist docs/INSTALL.txt "$ALL/"
+            (cd "$(dirname "$ALL")" && zip -qry "$GITHUB_WORKSPACE/dist/SimpleMtkBtFw-$V-$UP-AllInOne.zip" "$(basename "$ALL")")
+          done
+          (cd dist && shasum -a 256 *.zip > SHA256SUMS.txt)
+          ls -la dist
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleMtkBtFw-${{ steps.ver.outputs.version }}-${{ steps.ver.outputs.short }}
+          path: dist/*
+
+      - name: GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          body: |
+            **SimpleMtkBtFw ${{ steps.ver.outputs.version }}** — Bluetooth for MediaTek MT7921 / MT7921K (AMD RZ608) / MT7922 on macOS.
+
+            Works: firmware load, pairing, A2DP to speakers and headphones, **AirPods audio (AAC-ELD), controls and switching between Apple devices**, BLE. HFP microphone works but is quiet (CVSD only).
+
+            ### Downloads
+            - **`SimpleMtkBtFw-*-RELEASE-AllInOne.zip`** — everything for Bluetooth in one folder: `Lilu.kext`, `BlueToolFixup.kext` (acidanthera), `SimpleMtkBtFw.kext`, `SimpleMtkBtPatcher.kext`, plus `config-snippet.plist` (Kernel → Add entries in the right order and the NVRAM variables) and `INSTALL.txt`. **Start here.**
+            - `SimpleMtkBtFw-*-RELEASE.zip` — only the two kexts of this project (if you already have Lilu and BlueToolFixup).
+            - `*-DEBUG*.zip` — debug builds (more logging).
+
+            ### Install (OpenCore)
+            1. Copy the kexts to `EFI/OC/Kexts`.
+            2. Add them to `Kernel → Add` in this order: Lilu → BlueToolFixup (MinKernel 21.0.0) → SimpleMtkBtFw → SimpleMtkBtPatcher.
+            3. Add `bluetoothInternalControllerInfo` (14 zero bytes) and `bluetoothExternalDongleFailed` (`00`) to `NVRAM → Add` and `NVRAM → Delete` under `7C436110-AB2A-4BBB-A880-FE41995C9F82`.
+            4. Reboot. If the Bluetooth device is missing, cut power to the PC for 30 s (the M.2 card keeps standby power).
+
+            Details and troubleshooting: see the [README](https://github.com/flxxxxddd/SimpleMtkBtFw#readme).
+            Wi-Fi for the same card: **[SimpleMtkWlan](https://github.com/flxxxxddd/SimpleMtkWlan)**.

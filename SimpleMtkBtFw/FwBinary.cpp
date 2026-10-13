@@ -1,11 +1,7 @@
-//
-//  FwBinary.cpp
-//  SimpleMtkBtFw
-//
-//  Generated for SimpleMtkBtFw by laobamac on 2026/5/30.
-//  Copyright © 2026 laobamac. All rights reserved.
-//
 
+//  itlwm
+//
+//  Copyright © 2020 钟先耀. All rights reserved.
 #include "FwData.h"
 
 const unsigned char firmware_ae1e0c871a01a03819837b1a748df53c76f398c3[] = {0x78, 0x9C, 0xD4, 0xBD, 0x0B, 0x74, 0x53, 0x55, 0x16, 0x3F, 0x7C, 0xEE, 0x23, 0x8F, 0x3E, 0xD2,
